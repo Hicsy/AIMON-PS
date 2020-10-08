@@ -1,11 +1,13 @@
 /**
  * Some quick keyboard rebindings for AimOn remote.
  * The config app is set up to use F13-F24 to reduce clashes.
- * Below are some mappings to send common keys.
+ *
+ * Below are some mappings to send media keys to spotify or my YT remote:
+ * @link https://github.com/Hicsy/AHK-YouTube | My YouTube controller AHK.
  *
  * @author Hicsy
  * @link https://github.com/Hicsy/AIMON-PS | ReadMe + Installation.
- * @link http://tuact.com/support/manuals/users-manual | Original Mappings
+ * @link http://tuact.com/support/manuals/users-manual | Original Mappings.
  *
  * @requires AutoHotKey Version: 2.0 (Tested on build a122)
  */
@@ -14,7 +16,7 @@
 #SingleInstance force
 
 /*
- * To remap these in hardware cfg, hold pair-button while inserting usb dongle!
+ * @TODO To remap hardware cfg, hold pair-button while inserting usb dongle!
  * LEFT JOYCON *
  * Select: Browser_Search
  * PS: [Still Power-Button]
@@ -38,10 +40,45 @@
  * ○: Browser_Back
  */
 
-F22::Media_Prev
-F23::Media_Play_Pause
-F24::Media_Next
+/*
+ * @link https://lexikos.github.io/v2/docs/Hotkeys.htm#Symbols | Modifiers.
+ * @link https://lexikos.github.io/v2/docs/KeyList.htm | AHK Key Names.
+ */
 
-F14::LShift
+; Setup modifier keys to not repeat: F13 = RShift Hold, F14 = LShift Hold.
+SendLevel(2)
+F13::{
+    Hotkey("F13", "Off")
+    SendInput("{RShift down}")
+    return
+}
+*F13 up::{
+    Hotkey("F13", "On")
+    SendInput("{RShift up}")
+    return
+}
 
-F13::RShift
+F14::{
+    Hotkey("F14", "Off")
+    SendInput("{LShift down}")
+    return
+}
+*F14 up::{
+    Hotkey("F14", "On")
+    SendInput("{LShift up}")
+    return
+}
+
+;Send Media Keys - Includes modifiers for advanced control by other script.
+#InputLevel 2
+F22::SendInput("{Media_Prev}")
+F23::SendInput("{Media_Play_Pause}")
+F24::SendInput("{Media_Next}")
+
+<+F22::SendInput("{LShift}{Media_Prev}")
+<+F23::SendInput("{LShift}{Media_Play_Pause}")
+<+F24::SendInput("{LShift}{Media_Next}")
+
+>+F22::SendInput("{RShift}{Media_Prev}")
+>+F23::SendInput("{RShift}{Media_Play_Pause}")
+>+F24::SendInput("{RShift}{Media_Next}")
